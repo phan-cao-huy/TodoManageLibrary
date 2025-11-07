@@ -45,13 +45,9 @@
                         <td>@item.Telephone</td>
                         <td>@item.Department</td>
                         <td class="text-center" style="width: 200px;">
-                            <a asp-action="Edit" asp-route-id="@item.ReaderId" class="btn btn-primary btn-sm" title="Sửa">
-                                <i class="fas fa-edit"></i>
-                            </a>
-                            <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
-                                    data-bs-target="#detailsModal-@item.ReaderId" title="Chi tiết">
-                                <i class="fas fa-info-circle"></i>
-                            </button>
+                            <a asp-action="Edit" asp-route-id="@item.ReaderId" class="btn btn-warning btn-sm" title="Sửa">Sửa</a>
+                            <button type="button" class="btn btn-info btn-sm ms-1" data-bs-toggle="modal"
+                                    data-bs-target="#detailsModal-@item.ReaderId" title="Chi tiết">Chi tiết</button>
                             @* Bỏ nút xóa ngoài danh sách vì đã có trong trang Chỉnh sửa *@
                         </td>
                     </tr>
