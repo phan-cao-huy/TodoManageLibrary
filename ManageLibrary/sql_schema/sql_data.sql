@@ -88,6 +88,9 @@ CREATE TABLE Books (
     FOREIGN KEY (AuthorId) REFERENCES Author(AuthorId),
     FOREIGN KEY (PublisherId) REFERENCES Publisher(PublisherId)
 );
+ALTER TABLE Books
+ADD Quantity INT NOT NULL DEFAULT 0; -- Thêm cột Số lượng, mặc định là 0
+GO
 
 -- ==============================================
 -- BẢNG PHIẾU MƯỢN
