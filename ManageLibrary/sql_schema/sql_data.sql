@@ -1,5 +1,4 @@
-﻿IF DB_ID('ManageLibrary') IS NULL
-    CREATE DATABASE ManageLibrary;
+CREATE DATABASE ManageLibrary;
 GO
 USE ManageLibrary;
 GO
@@ -30,7 +29,7 @@ CREATE TABLE Readers (
     Department NVARCHAR(100)                         -- Khoa / Phòng ban
 );
 
--- ==============================================
+-- ==============================================   
 -- BẢNG TÀI KHOẢN
 -- 1-1 với Reader, 1-n với Employee
 -- ==============================================
@@ -88,9 +87,14 @@ CREATE TABLE Books (
     FOREIGN KEY (AuthorId) REFERENCES Author(AuthorId),
     FOREIGN KEY (PublisherId) REFERENCES Publisher(PublisherId)
 );
+USE ManageLibrary;
+GO
+
 ALTER TABLE Books
 ADD Quantity INT NOT NULL DEFAULT 0; -- Thêm cột Số lượng, mặc định là 0
 GO
+
+PRINT N'Đã thêm cột Quantity vào bảng Books thành công!';
 
 -- ==============================================
 -- BẢNG PHIẾU MƯỢN
@@ -132,6 +136,7 @@ CREATE TABLE BookAuthor (
     FOREIGN KEY (AuthorId) REFERENCES Author(AuthorId)
 );
 
+select * from Employees
 
 -- 1. Thêm một Nhân viên mẫu (vì tài khoản Admin cần liên kết với Employee)
 INSERT INTO Employees (EmployeeId, FullName, Role)
@@ -145,19 +150,44 @@ INSERT INTO Account (AccountId, Username, Password, EmployeeId, ReaderId)
 VALUES ('TK001', N'admin', N'123', 'NV001', NULL);
 GO
 
--- 3. (Tùy chọn) Thêm một Độc giả mẫu
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader)
-VALUES ('DG001', N'Nguyễn Văn A', N'Sinh viên');
-GO
 
--- 4. (Tùy chọn) Thêm một Tài khoản Độc giả liên kết với 'DG001'
--- TÀI KHOẢN: nguyenvana
--- MẬT KHẨU: 123
-INSERT INTO Account (AccountId, Username, Password, EmployeeId, ReaderId)
-VALUES ('TK002', N'nguyenvana', N'123', NULL, 'DG001');
-GO
 
--- Bổ sung dữ liệu cha trước khi thêm Sách để tránh lỗi khóa ngoại
+-- Thêm dữ liệu vào bảng Books
+INSERT INTO Books (BookId, Name, YearOfPublic, Position, NumOfPage, Cost, CategoryId, AuthorId, PublisherId)
+VALUES 
+(N'S001', N'Lập trình C# cơ bản', 2020, N'A1', 350, 100000, N'TL001', N'TG001', N'NXB001'),
+(N'S002', N'Lập trình Java nâng cao', 2021, N'B2', 420, 120000, N'TL001', N'TG002', N'NXB002'),
+(N'S003', N'Thiết kế web với HTML, CSS', 2022, N'C1', 320, 90000, N'TL002', N'TG003', N'NXB003'),
+(N'S004', N'Khoa học dữ liệu với Python', 2023, N'A3', 500, 150000, N'TL001', N'TG004', N'NXB001'),
+(N'S005', N'Cơ sở dữ liệu SQL', 2019, N'B1', 380, 85000, N'TL003', N'TG001', N'NXB002'),
+(N'S006', N'An toàn mạng máy tính', 2021, N'C2', 450, 135000, N'TL002', N'TG005', N'NXB003'),
+(N'S007', N'Giới thiệu về Trí tuệ nhân tạo', 2022, N'D1', 330, 110000, N'TL001', N'TG006', N'NXB001');
+
+PRINT N'Bắt đầu cập nhật số lượng cho sách hiện có...';
+UPDATE Books SET Quantity = 10 WHERE BookId = N'S001';
+UPDATE Books SET Quantity = 8 WHERE BookId = N'S002';
+UPDATE Books SET Quantity = 15 WHERE BookId = N'S003';
+UPDATE Books SET Quantity = 7 WHERE BookId = N'S004';
+UPDATE Books SET Quantity = 12 WHERE BookId = N'S005';
+UPDATE Books SET Quantity = 5 WHERE BookId = N'S006';
+UPDATE Books SET Quantity = 10 WHERE BookId = N'S007';
+UPDATE Books SET Quantity = 20 WHERE BookId = N'S008';
+UPDATE Books SET Quantity = 10 WHERE BookId = N'S009';
+UPDATE Books SET Quantity = 18 WHERE BookId = N'S010';
+UPDATE Books SET Quantity = 15 WHERE BookId = N'S011';
+UPDATE Books SET Quantity = 25 WHERE BookId = N'S012';
+UPDATE Books SET Quantity = 14 WHERE BookId = N'S013';
+UPDATE Books SET Quantity = 9 WHERE BookId = N'S014';
+UPDATE Books SET Quantity = 22 WHERE BookId = N'S015';
+UPDATE Books SET Quantity = 10 WHERE BookId = N'S016';
+UPDATE Books SET Quantity = 16 WHERE BookId = N'S017';
+UPDATE Books SET Quantity = 11 WHERE BookId = N'S018';
+UPDATE Books SET Quantity = 7 WHERE BookId = N'S019';
+UPDATE Books SET Quantity = 13 WHERE BookId = N'S020';
+
+PRINT N'Đã cập nhật số lượng cho 20 cuốn sách.';
+GO
+select * from Books
 -- Thêm dữ liệu vào bảng Category
 INSERT INTO Category (CategoryId, Name) 
 VALUES 
@@ -181,137 +211,124 @@ VALUES
 (N'NXB001', N'Nhà xuất bản Giáo dục', N'Hà Nội', N'0241234567'),
 (N'NXB002', N'Nhà xuất bản Trẻ', N'TP.HCM', N'0287654321'),
 (N'NXB003', N'Nhà xuất bản Khoa học', N'Đà Nẵng', N'0236123456');
-
-PRINT N'Đã thêm dữ liệu mẫu thành công!';
-
--- Thêm dữ liệu vào bảng Books (đã có Category/Author/Publisher)
-INSERT INTO Books (BookId, Name, YearOfPublic, Position, NumOfPage, Cost, CategoryId, AuthorId, PublisherId)
-VALUES 
-(N'S001', N'Lập trình C# cơ bản', 2020, N'A1', 350, 100000, N'TL001', N'TG001', N'NXB001'),
-(N'S002', N'Lập trình Java nâng cao', 2021, N'B2', 420, 120000, N'TL001', N'TG002', N'NXB002'),
-(N'S003', N'Thiết kế web với HTML, CSS', 2022, N'C1', 320, 90000, N'TL002', N'TG003', N'NXB003'),
-(N'S004', N'Khoa học dữ liệu với Python', 2023, N'A3', 500, 150000, N'TL001', N'TG004', N'NXB001'),
-(N'S005', N'Cơ sở dữ liệu SQL', 2019, N'B1', 380, 85000, N'TL003', N'TG001', N'NXB002'),
-(N'S006', N'An toàn mạng máy tính', 2021, N'C2', 450, 135000, N'TL002', N'TG005', N'NXB003'),
-(N'S007', N'Giới thiệu về Trí tuệ nhân tạo', 2022, N'D1', 330, 110000, N'TL001', N'TG006', N'NXB001');
-
 -- Thêm dữ liệu độc giả 
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG123456789', N'Trần Văn An', N'Sinh viên', N'Công nghệ thông tin');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG111222333', N'Nguyễn Thị Bình', N'Sinh viên', N'Quản trị kinh doanh');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG444555666', N'Lê Văn Cường', N'Sinh viên', N'Ngôn ngữ Anh');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG777888999', N'Phạm Thị Dung', N'Sinh viên', N'Công nghệ thông tin');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG101101101', N'Hoàng Văn Giang', N'Sinh viên', N'Thiết kế đồ họa');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG202202202', N'Vũ Thị Hương', N'Sinh viên', N'Quản trị kinh doanh');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG303303303', N'Đặng Văn Khánh', N'Sinh viên', N'Kế toán');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG404404404', N'Bùi Thị Lan', N'Sinh viên', N'Công nghệ thông tin');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG505505505', N'Hồ Văn Minh', N'Sinh viên', N'Ngôn ngữ Anh');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG606606606', N'Ngô Thị Nga', N'Sinh viên', N'Tài chính ngân hàng');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG707707707', N'Dương Văn Phúc', N'Sinh viên', N'Công nghệ thông tin');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG808808808', N'Mai Thị Quyên', N'Sinh viên', N'Quản trị kinh doanh');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG909909909', N'Lý Văn Sơn', N'Sinh viên', N'Kế toán');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG010010010', N'Trịnh Thị Thảo', N'Sinh viên', N'Thiết kế đồ họa');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG012012012', N'Phan Văn Toàn', N'Sinh viên', N'Công nghệ thông tin');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG013013013', N'Đoàn Thị Uyên', N'Sinh viên', N'Ngôn ngữ Anh');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG014014014', N'Lâm Văn Vĩ', N'Sinh viên', N'Quản trị kinh doanh');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG015015015', N'Châu Thị Xuân', N'Sinh viên', N'Tài chính ngân hàng');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG016016016', N'Vương Văn Yến', N'Sinh viên', N'Công nghệ thông tin');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG017017017', N'Tô Văn Hùng', N'Sinh viên', N'Kế toán');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG018018018', N'Nguyễn Bảo Nam', N'Sinh viên', N'Quản trị kinh doanh');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG019019019', N'Lê Kim Chi', N'Sinh viên', N'Công nghệ thông tin');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG020020020', N'Hà Tuấn Kiệt', N'Sinh viên', N'Ngôn ngữ Anh');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG021021021', N'Đỗ Phương Anh', N'Sinh viên', N'Thiết kế đồ họa');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG022022022', N'Huỳnh Gia Huy', N'Sinh viên', N'Công nghệ thông tin');
+INSERT INTO Readers (ReaderId, FullName, DateOfBirth, NationalId, TypeOfReader, Email, Telephone, Address, Department)
+VALUES 
+('SV002', N'Lê Minh Tuấn', '2003-01-10', '012345678902', N'Sinh viên', 'tuan.le@email.com', '0912345678', N'123 Đường A, Quận 1, TP. HCM', N'Công nghệ Thông tin');
+
+INSERT INTO Readers (ReaderId, FullName, DateOfBirth, NationalId, TypeOfReader, Email, Telephone, Address, Department)
+VALUES 
+('SV003', N'Trần Thị Mai', '2004-02-15', '012345678903', N'Sinh viên', 'mai.tran@email.com', '0912345679', N'456 Đường B, Quận 3, TP. HCM', N'Kế toán');
+
+INSERT INTO Readers (ReaderId, FullName, DateOfBirth, NationalId, TypeOfReader, Email, Telephone, Address, Department)
+VALUES 
+('SV004', N'Phạm Văn Hùng', '2003-03-20', '012345678904', N'Sinh viên', 'hung.pham@email.com', '0912345680', N'789 Đường C, Quận 5, TP. HCM', N'Cơ khí');
+
+INSERT INTO Readers (ReaderId, FullName, DateOfBirth, NationalId, TypeOfReader, Email, Telephone, Address, Department)
+VALUES 
+('SV005', N'Huỳnh Thị Lan', '2005-04-25', '012345678905', N'Sinh viên', 'lan.huynh@email.com', '0912345681', N'101 Đường D, Quận 7, TP. HCM', N'Ngôn ngữ Anh');
+
+INSERT INTO Readers (ReaderId, FullName, DateOfBirth, NationalId, TypeOfReader, Email, Telephone, Address, Department)
+VALUES 
+('SV006', N'Bùi Văn Đức', '2003-05-30', '012345678906', N'Sinh viên', 'duc.bui@email.com', '0912345682', N'202 Đường E, Quận 9, TP. HCM', N'Công nghệ Thông tin');
+
+INSERT INTO Readers (ReaderId, FullName, DateOfBirth, NationalId, TypeOfReader, Email, Telephone, Address, Department)
+VALUES 
+('SV007', N'Đặng Thị Hoa', '2004-06-05', '012345678907', N'Sinh viên', 'hoa.dang@email.com', '0912345683', N'303 Đường F, Quận 11, TP. HCM', N'Quản trị Kinh doanh');
+
+INSERT INTO Readers (ReaderId, FullName, DateOfBirth, NationalId, TypeOfReader, Email, Telephone, Address, Department)
+VALUES 
+('SV008', N'Ngô Văn Nam', '2003-07-10', '012345678908', N'Sinh viên', 'nam.ngo@email.com', '0912345684', N'404 Đường G, Quận Gò Vấp, TP. HCM', N'Điện tử Viễn thông');
+
+INSERT INTO Readers (ReaderId, FullName, DateOfBirth, NationalId, TypeOfReader, Email, Telephone, Address, Department)
+VALUES 
+('SV009', N'Dương Thị Thu', '2005-08-15', '012345678909', N'Sinh viên', 'thu.duong@email.com', '0912345685', N'505 Đường H, Quận Tân Bình, TP. HCM', N'Tài chính Ngân hàng');
+
+INSERT INTO Readers (ReaderId, FullName, DateOfBirth, NationalId, TypeOfReader, Email, Telephone, Address, Department)
+VALUES 
+('SV010', N'Hoàng Văn Long', '2003-09-20', '012345678910', N'Sinh viên', 'long.hoang@email.com', '0912345686', N'606 Đường I, Quận Bình Thạnh, TP. HCM', N'Công nghệ Thông tin');
+
+INSERT INTO Readers (ReaderId, FullName, DateOfBirth, NationalId, TypeOfReader, Email, Telephone, Address, Department)
+VALUES 
+('SV011', N'Vũ Thị Kim', '2004-10-25', '012345678911', N'Sinh viên', 'kim.vu@email.com', '0912345687', N'707 Đường K, Quận Phú Nhuận, TP. HCM', N'Luật');
+
 
 -- ==============================================
--- 25 GIẢNG VIÊN
+--  GIẢNG VIÊN
 -- ==============================================
 
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG987654321', N'Nguyễn Văn Thành', N'Giảng viên', N'Khoa Công nghệ thông tin');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG888777666', N'Trần Thị Thu Hằng', N'Giảng viên', N'Khoa Quản trị kinh doanh');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG555444333', N'Lê Minh Long', N'Giảng viên', N'Khoa Ngôn ngữ Anh');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG222111000', N'Phạm Hùng Cường', N'Giảng viên', N'Khoa Công nghệ thông tin');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG100100100', N'Hoàng Thị Mai', N'Giảng viên', N'Khoa Thiết kế đồ họa');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG200200200', N'Vũ Đức Thắng', N'Giảng viên', N'Khoa Quản trị kinh doanh');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG300300300', N'Đặng Thu Hà', N'Giảng viên', N'Khoa Kế toán');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG400400400', N'Bùi Thanh Tùng', N'Giảng viên', N'Khoa Công nghệ thông tin');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG500500500', N'Hồ Ngọc Bích', N'Giảng viên', N'Khoa Ngôn ngữ Anh');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG600600600', N'Ngô Minh Quân', N'Giảng viên', N'Khoa Tài chính ngân hàng');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG700700700', N'Dương Chí Thiện', N'Giảng viên', N'Khoa Công nghệ thông tin');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG800800800', N'Mai Lan Hương', N'Giảng viên', N'Khoa Quản trị kinh doanh');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG900900900', N'Lý Hoàng Nam', N'Giảng viên', N'Khoa Kế toán');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG011011011', N'Trịnh Tuấn Anh', N'Giảng viên', N'Khoa Thiết kế đồ họa');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG023023023', N'Phan Thanh Bình', N'Giảng viên', N'Khoa Công nghệ thông tin');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG034034034', N'Đoàn Mỹ Lệ', N'Giảng viên', N'Khoa Ngôn ngữ Anh');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG045045045', N'Lâm Hoàng Long', N'Giảng viên', N'Khoa Quản trị kinh doanh');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG056056056', N'Châu Minh Triết', N'Giảng viên', N'Khoa Tài chính ngân hàng');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG067067067', N'Vương Thanh Tâm', N'Giảng viên', N'Khoa Công nghệ thông tin');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG078078078', N'Tô Gia Bảo', N'Giảng viên', N'Khoa Kế toán');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG089089089', N'Nguyễn Hoàng Yến', N'Giảng viên', N'Khoa Quản trị kinh doanh');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG091091091', N'Lê Quang Huy', N'Giảng viên', N'Khoa Công nghệ thông tin');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG092092092', N'Hà Mỹ Linh', N'Giảng viên', N'Khoa Ngôn ngữ Anh');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG093093093', N'Đỗ Minh Hiếu', N'Giảng viên', N'Khoa Thiết kế đồ họa');
-INSERT INTO Readers (ReaderId, FullName, TypeOfReader, Department) VALUES (N'DG094094094', N'Huỳnh Ngọc Ánh', N'Giảng viên', N'Khoa Công nghệ thông tin');
+INSERT INTO Readers (ReaderId, FullName, DateOfBirth, NationalId, TypeOfReader, Email, Telephone, Address, Department)
+VALUES 
+('GV002', N'Nguyễn Văn Bình', '1980-01-05', '023456789002', N'Giảng viên', 'binh.nguyen@email.com', '0987654322', N'808 Đường L, Quận 2, TP. HCM', N'Công nghệ Thông tin');
+
+INSERT INTO Readers (ReaderId, FullName, DateOfBirth, NationalId, TypeOfReader, Email, Telephone, Address, Department)
+VALUES 
+('GV003', N'Trần Thị Cúc', '1982-02-10', '023456789003', N'Giảng viên', 'cuc.tran@email.com', '0987654323', N'909 Đường M, Quận 4, TP. HCM', N'Kế toán');
+
+INSERT INTO Readers (ReaderId, FullName, DateOfBirth, NationalId, TypeOfReader, Email, Telephone, Address, Department)
+VALUES 
+('GV004', N'Lê Văn Dũng', '1978-03-15', '023456789004', N'Giảng viên', 'dung.le@email.com', '0987654324', N'111 Đường N, Quận 6, TP. HCM', N'Cơ khí');
+
+INSERT INTO Readers (ReaderId, FullName, DateOfBirth, NationalId, TypeOfReader, Email, Telephone, Address, Department)
+VALUES 
+('GV005', N'Phạm Thị Lan', '1985-04-20', '023456789005', N'Giảng viên', 'lan.pham@email.com', '0987654325', N'222 Đường P, Quận 8, TP. HCM', N'Ngôn ngữ Anh');
+
+INSERT INTO Readers (ReaderId, FullName, DateOfBirth, NationalId, TypeOfReader, Email, Telephone, Address, Department)
+VALUES 
+('GV006', N'Hoàng Văn Minh', '1990-05-25', '023456789006', N'Giảng viên', 'minh.hoang@email.com', '0987654326', N'333 Đường Q, Quận 10, TP. HCM', N'Công nghệ Thông tin');
+
+INSERT INTO Readers (ReaderId, FullName, DateOfBirth, NationalId, TypeOfReader, Email, Telephone, Address, Department)
+VALUES 
+('GV007', N'Vũ Thị Nga', '1988-06-30', '023456789007', N'Giảng viên', 'nga.vu@email.com', '0987654327', N'444 Đường R, Quận 12, TP. HCM', N'Quản trị Kinh doanh');
+
+INSERT INTO Readers (ReaderId, FullName, DateOfBirth, NationalId, TypeOfReader, Email, Telephone, Address, Department)
+VALUES 
+('GV008', N'Đặng Văn Sơn', '1975-07-05', '023456789008', N'Giảng viên', 'son.dang@email.com', '0987654328', N'555 Đường S, Quận Tân Phú, TP. HCM', N'Điện tử Viễn thông');
+
+INSERT INTO Readers (ReaderId, FullName, DateOfBirth, NationalId, TypeOfReader, Email, Telephone, Address, Department)
+VALUES 
+('GV009', N'Bùi Thị Thảo', '1992-08-10', '023456789009', N'Giảng viên', 'thao.bui@email.com', '0987654329', N'666 Đường T, Quận Bình Tân, TP. HCM', N'Tài chính Ngân hàng');
+
+INSERT INTO Readers (ReaderId, FullName, DateOfBirth, NationalId, TypeOfReader, Email, Telephone, Address, Department)
+VALUES 
+('GV010', N'Ngô Văn Hùng', '1983-09-15', '023456789010', N'Giảng viên', 'hung.ngo@email.com', '0987654330', N'777 Đường U, TP. Thủ Đức, TP. HCM', N'Công nghệ Thông tin');
+
+INSERT INTO Readers (ReaderId, FullName, DateOfBirth, NationalId, TypeOfReader, Email, Telephone, Address, Department)
+VALUES 
+('GV011', N'Dương Thị Mai', '1995-10-20', '023456789011', N'Giảng viên', 'mai.duong@email.com', '0987654331', N'888 Đường V, Huyện Củ Chi, TP. HCM', N'Luật');;
 
 -- ==============================================
--- TÀI KHOẢN CHO 25 SINH VIÊN
--- (Bắt đầu từ TK003, giả sử TK001 và TK002 đã tồn tại)
+-- TÀI KHOẢN CHO SINH VIÊN
 -- ==============================================
 
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK003', N'tvan', N'123', N'DG123456789');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK004', N'ntbinh', N'123', N'DG111222333');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK005', N'lvcuong', N'123', N'DG444555666');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK006', N'ptdung', N'123', N'DG777888999');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK007', N'hvgiang', N'123', N'DG101101101');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK008', N'vthuong', N'123', N'DG202202202');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK009', N'dvkhanh', N'123', N'DG303303303');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK010', N'btlan', N'123', N'DG404404404');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK011', N'hvminh', N'123', N'DG505505505');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK012', N'ntnga', N'123', N'DG606606606');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK013', N'dvphuc', N'123', N'DG707707707');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK014', N'mtq uyen', N'123', N'DG808808808');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK015', N'lvson', N'123', N'DG909909909');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK016', N'ttthao', N'123', N'DG010010010');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK017', N'pvtoan', N'123', N'DG012012012');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK018', N'dtuyen', N'123', N'DG013013013');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK019', N'lvvi', N'123', N'DG014014014');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK020', N'ctxuan', N'123', N'DG015015015');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK021', N'vvyen', N'123', N'DG016016016');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK022', N'tvhung', N'123', N'DG017017017');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK023', N'nbnam', N'123', N'DG018018018');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK024', N'lkchi', N'123', N'DG019019019');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK025', N'htkiet', N'123', N'DG020020020');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK026', N'dpanh', N'123', N'DG021021021');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK027', N'hghuy', N'123', N'DG022022022');
+INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES 
+(N'TK002', N'lmtuan', N'123', N'SV002'),
+(N'TK003', N'ttmai', N'123', N'SV003'),
+(N'TK004', N'pvhung', N'123', N'SV004'),
+(N'TK005', N'hthan', N'123', N'SV005'),
+(N'TK006', N'bvduc', N'123', N'SV006'),
+(N'TK007', N'dthoa', N'123', N'SV007'),
+(N'TK008', N'nvnam', N'123', N'SV008'),
+(N'TK009', N'dtthu', N'123', N'SV009'),
+(N'TK010', N'hvlong', N'123', N'SV010'),
+(N'TK011', N'vtkim', N'123', N'SV011');
+
 
 -- ==============================================
--- TÀI KHOẢN CHO 25 GIẢNG VIÊN
+-- TÀI KHOẢN CHOGIẢNG VIÊN
 -- ==============================================
 
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK028', N'gv_nvthanh', N'123', N'DG987654321');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK029', N'gv_tthhang', N'123', N'DG888777666');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK030', N'gv_lmlong', N'123', N'DG555444333');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK031', N'gv_phcuong', N'123', N'DG222111000');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK032', N'gv_htmai', N'123', N'DG100100100');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK033', N'gv_vdthang', N'123', N'DG200200200');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK034', N'gv_dtha', N'123', N'DG300300300');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK035', N'gv_bttung', N'123', N'DG400400400');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK036', N'gv_hnbich', N'123', N'DG500500500');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK037', N'gv_nmquan', N'123', N'DG600600600');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK038', N'gv_dcthien', N'123', N'DG700700700');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK039', N'gv_mlhuong', N'123', N'DG800800800');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK040', N'gv_lhnam', N'123', N'DG900900900');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK041', N'gv_ttanh', N'123', N'DG011011011');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK042', N'gv_ptbinh', N'123', N'DG023023023');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK043', N'gv_dmle', N'123', N'DG034034034');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK044', N'gv_lhlong', N'123', N'DG045045045');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK045', N'gv_cmtriet', N'123', N'DG056056056');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK046', N'gv_vttam', N'123', N'DG067067067');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK047', N'gv_tgbao', N'123', N'DG078078078');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK048', N'gv_nhyen', N'123', N'DG089089089');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK049', N'gv_lqhuy', N'123', N'DG091091091');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK050', N'gv_hmlinh', N'123', N'DG092092092');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK051', N'gv_dmhieu', N'123', N'DG093093093');
-INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES (N'TK052', N'gv_hnanh', N'123', N'DG094094094');
+INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES 
+(N'TK012', N'gv_nvbinh', N'123', N'GV002'),
+(N'TK013', N'gv_ttcuc', N'123', N'GV003'),
+(N'TK014', N'gv_lvdung', N'123', N'GV004'),
+(N'TK015', N'gv_pthlan', N'123', N'GV005'),
+(N'TK016', N'gv_hvminh', N'123', N'GV006'),
+(N'TK017', N'gv_vtnga', N'123', N'GV007'),
+(N'TK018', N'gv_dvson', N'123', N'GV008'),
+(N'TK019', N'gv_btthao', N'123', N'GV009'),
+(N'TK020', N'gv_nvhung', N'123', N'GV010'),
+(N'TK021', N'gv_dtmai', N'123', N'GV011');
 
 
 GO
@@ -443,3 +460,5 @@ GO
 
 PRINT N'Đã thêm thành công dữ liệu sách và phiếu mượn!';
 GO
+
+
