@@ -1,88 +1,97 @@
+<<<<<<< HEAD
 CREATE DATABASE ManageLibrary;
+=======
+﻿CREATE DATABASE ManageLibrary;
+>>>>>>> 5b7384b (update sql_data.sql again)
 GO
 USE ManageLibrary;
-GO
+
 
 -- ==============================================
 -- BẢNG NHÂN VIÊN
 -- ==============================================
 CREATE TABLE Employees (
-    EmployeeId VARCHAR(20) PRIMARY KEY,              -- Mã nhân viên (VD: NV001)
-    FullName NVARCHAR(100) NOT NULL,                 -- Họ tên nhân viên
-    Email NVARCHAR(100),                             -- Email
-    Telephone NVARCHAR(20),                          -- Số điện thoại
-    Role NVARCHAR(50)                                -- Chức vụ (thủ thư, quản lý, ...)
+    EmployeeId VARCHAR(20) PRIMARY KEY,                 -- Mã nhân viên (VD: NV001)
+    FullName NVARCHAR(100) NOT NULL,                    -- Họ tên nhân viên
+    Email NVARCHAR(100),                                -- Email
+    Telephone NVARCHAR(20),                             -- Số điện thoại
+    Role NVARCHAR(50)                                   -- Chức vụ (thủ thư, quản lý, ...)
 );
 
 -- ==============================================
 -- BẢNG ĐỘC GIẢ
 -- ==============================================
 CREATE TABLE Readers (
-    ReaderId VARCHAR(20) PRIMARY KEY,                -- Mã độc giả (VD: DG001)
-    FullName NVARCHAR(100) NOT NULL,                 -- Họ tên
-    DateOfBirth DATE,                                -- Ngày sinh
-    NationalId NVARCHAR(20),                         -- CCCD/CMND
-    TypeOfReader NVARCHAR(50),                       -- Loại độc giả (Sinh viên, Giảng viên,...)
+    ReaderId VARCHAR(20) PRIMARY KEY,                   -- Mã độc giả (VD: DG001)
+    FullName NVARCHAR(100) NOT NULL,                    -- Họ tên
+    DateOfBirth DATE,                                   -- Ngày sinh
+    NationalId NVARCHAR(20),                            -- CCCD/CMND
+    TypeOfReader NVARCHAR(50),                          -- Loại độc giả (Sinh viên, Giảng viên,...)
     Email NVARCHAR(100),
     Telephone NVARCHAR(20),
     Address NVARCHAR(200),
-    Department NVARCHAR(100)                         -- Khoa / Phòng ban
+    Department NVARCHAR(100)                            -- Khoa / Phòng ban
 );
 
+<<<<<<< HEAD
 -- ==============================================   
+=======
+-- ============================================== 
+>>>>>>> 5b7384b (update sql_data.sql again)
 -- BẢNG TÀI KHOẢN
 -- 1-1 với Reader, 1-n với Employee
 -- ==============================================
 CREATE TABLE Account (
-    AccountId VARCHAR(20) PRIMARY KEY,               -- Mã tài khoản (VD: TK001)
-    Username NVARCHAR(50) UNIQUE NOT NULL,           -- Tên đăng nhập
-    Password NVARCHAR(100) NOT NULL,                 -- Mật khẩu
-    EmployeeId VARCHAR(20) NULL,                     -- Liên kết nhân viên (nếu là tài khoản nhân viên)
-    ReaderId VARCHAR(20) NULL,                       -- Liên kết độc giả (nếu là tài khoản độc giả)
+    AccountId VARCHAR(20) PRIMARY KEY,                  -- Mã tài khoản (VD: TK001)
+    Username NVARCHAR(50) UNIQUE NOT NULL,              -- Tên đăng nhập
+    Password NVARCHAR(100) NOT NULL,                    -- Mật khẩu
+    EmployeeId VARCHAR(20) NULL,                        -- Liên kết nhân viên (nếu là tài khoản nhân viên)
+    ReaderId VARCHAR(20) NULL,                          -- Liên kết độc giả (nếu là tài khoản độc giả)
     FOREIGN KEY (EmployeeId) REFERENCES Employees(EmployeeId),
     FOREIGN KEY (ReaderId) REFERENCES Readers(ReaderId),
-    CONSTRAINT UQ_Account_Reader UNIQUE (ReaderId)   -- Mỗi độc giả chỉ có 1 tài khoản
+    CONSTRAINT UQ_Account_Reader UNIQUE (ReaderId)      -- Mỗi độc giả chỉ có 1 tài khoản
 );
 
 -- ==============================================
 -- BẢNG TÁC GIẢ
 -- ==============================================
 CREATE TABLE Author (
-    AuthorId VARCHAR(20) PRIMARY KEY,                -- Mã tác giả (VD: TG001)
-    Name NVARCHAR(100) NOT NULL                      -- Tên tác giả
+    AuthorId VARCHAR(20) PRIMARY KEY,                   -- Mã tác giả (VD: TG001)
+    Name NVARCHAR(100) NOT NULL                         -- Tên tác giả
 );
 
 -- ==============================================
 -- BẢNG NHÀ XUẤT BẢN
 -- ==============================================
 CREATE TABLE Publisher (
-    PublisherId VARCHAR(20) PRIMARY KEY,             -- Mã NXB (VD: NXB001)
-    Name NVARCHAR(100) NOT NULL,                     -- Tên nhà xuất bản
-    Address NVARCHAR(200),                           -- Địa chỉ
-    Telephone NVARCHAR(20)                           -- SĐT
+    PublisherId VARCHAR(20) PRIMARY KEY,                -- Mã NXB (VD: NXB001)
+    Name NVARCHAR(100) NOT NULL,                        -- Tên nhà xuất bản
+    Address NVARCHAR(200),                              -- Địa chỉ
+    Telephone NVARCHAR(20)                              -- SĐT
 );
 
 -- ==============================================
 -- BẢNG THỂ LOẠI
 -- ==============================================
 CREATE TABLE Category (
-    CategoryId VARCHAR(20) PRIMARY KEY,              -- Mã thể loại (VD: TL001)
-    Name NVARCHAR(100) NOT NULL                      -- Tên thể loại (CNTT, Văn học,...)
+    CategoryId VARCHAR(20) PRIMARY KEY,                 -- Mã thể loại (VD: TL001)
+    Name NVARCHAR(100) NOT NULL                         -- Tên thể loại (CNTT, Văn học,...)
 );
 
 -- ==============================================
 -- BẢNG SÁCH
 -- ==============================================
 CREATE TABLE Books (
-    BookId VARCHAR(20) PRIMARY KEY,                  -- Mã sách (VD: S001)
-    Name NVARCHAR(200) NOT NULL,                     -- Tên sách
-    YearOfPublic INT,                                -- Năm xuất bản
-    Position NVARCHAR(50),                           -- Vị trí trên kệ
-    NumOfPage INT,                                   -- Số trang
-    Cost DECIMAL(10,2),                              -- Giá
-    CategoryId VARCHAR(20),                          -- Thể loại
-    AuthorId VARCHAR(20),                            -- Tác giả
-    PublisherId VARCHAR(20),                         -- Nhà xuất bản
+    BookId VARCHAR(20) PRIMARY KEY,                     -- Mã sách (VD: S001)
+    Name NVARCHAR(200) NOT NULL,                        -- Tên sách
+    YearOfPublic INT,                                   -- Năm xuất bản
+    Position NVARCHAR(50),                              -- Vị trí trên kệ
+    NumOfPage INT,                                      -- Số trang
+    Cost DECIMAL(10,2),                                 -- Giá
+    CategoryId VARCHAR(20),                             -- Thể loại
+    AuthorId VARCHAR(20),                               -- Tác giả
+    PublisherId VARCHAR(20),                            -- Nhà xuất bản
+    Quantity INT NOT NULL DEFAULT 0,                    -- Số lượng
     FOREIGN KEY (CategoryId) REFERENCES Category(CategoryId),
     FOREIGN KEY (AuthorId) REFERENCES Author(AuthorId),
     FOREIGN KEY (PublisherId) REFERENCES Publisher(PublisherId)
@@ -100,13 +109,13 @@ PRINT N'Đã thêm cột Quantity vào bảng Books thành công!';
 -- BẢNG PHIẾU MƯỢN
 -- ==============================================
 CREATE TABLE LoanSlip (
-    LoanId VARCHAR(20) PRIMARY KEY,                  -- Mã phiếu mượn (VD: PM001)
-    ReaderId VARCHAR(20) NOT NULL,                   -- Mã độc giả mượn
-    EmployeeId VARCHAR(20) NOT NULL,                 -- Mã nhân viên lập phiếu
-    LoanDate DATE NOT NULL,                          -- Ngày mượn
-    ExpiredDate DATE,                                -- Ngày hết hạn
-    ReturnDate DATE,                                 -- Ngày trả
-    Status NVARCHAR(50),                             -- Trạng thái (Đang mượn, Đã trả,...)
+    LoanId VARCHAR(20) PRIMARY KEY,                     -- Mã phiếu mượn (VD: PM001)
+    ReaderId VARCHAR(20) NOT NULL,                      -- Mã độc giả mượn
+    EmployeeId VARCHAR(20) NOT NULL,                    -- Mã nhân viên lập phiếu
+    LoanDate DATE NOT NULL,                             -- Ngày mượn
+    ExpiredDate DATE,                                   -- Ngày hết hạn
+    ReturnDate DATE,                                    -- Ngày trả
+    Status NVARCHAR(50),                                -- Trạng thái (Đang mượn, Đã trả,...)
     FOREIGN KEY (ReaderId) REFERENCES Readers(ReaderId),
     FOREIGN KEY (EmployeeId) REFERENCES Employees(EmployeeId)
 );
@@ -115,13 +124,13 @@ CREATE TABLE LoanSlip (
 -- BẢNG CHI TIẾT MƯỢN
 -- ==============================================
 CREATE TABLE LoanDetail (
-    LoanDetailId VARCHAR(20) PRIMARY KEY,            -- Mã chi tiết mượn (VD: CT001)
-    LoanId VARCHAR(20) NOT NULL,                     -- Mã phiếu mượn
-    BookId VARCHAR(20) NOT NULL,                     -- Mã sách
-    LoanStatus NVARCHAR(50),                         -- Trạng thái khi mượn (Bình thường, Hư,...)
-    ReturnStatus NVARCHAR(50),                       -- Trạng thái khi trả
-    IsLose BIT DEFAULT 0,                            -- Có mất không (0 = Không, 1 = Có)
-    Fine DECIMAL(10,2) DEFAULT 0,                    -- Tiền phạt
+    LoanDetailId VARCHAR(20) PRIMARY KEY,               -- Mã chi tiết mượn (VD: CT001)
+    LoanId VARCHAR(20) NOT NULL,                        -- Mã phiếu mượn
+    BookId VARCHAR(20) NOT NULL,                        -- Mã sách
+    LoanStatus NVARCHAR(50),                            -- Trạng thái khi mượn (Bình thường, Hư,...)
+    ReturnStatus NVARCHAR(50),                          -- Trạng thái khi trả
+    IsLose BIT DEFAULT 0,                               -- Có mất không (0 = Không, 1 = Có)
+    Fine DECIMAL(10,2) DEFAULT 0,                       -- Tiền phạt
     FOREIGN KEY (LoanId) REFERENCES LoanSlip(LoanId),
     FOREIGN KEY (BookId) REFERENCES Books(BookId)
 );
@@ -129,15 +138,22 @@ CREATE TABLE LoanDetail (
 -- BẢNG SÁCH - NHIỀU TÁC GIẢ (TÙY CHỌN)
 -- ==============================================
 CREATE TABLE BookAuthor (
-    BookId VARCHAR(20),                              -- Mã sách
-    AuthorId VARCHAR(20),                            -- Mã tác giả
+    BookId VARCHAR(20),                                 -- Mã sách
+    AuthorId VARCHAR(20),                               -- Mã tác giả
     PRIMARY KEY (BookId, AuthorId),
     FOREIGN KEY (BookId) REFERENCES Books(BookId),
     FOREIGN KEY (AuthorId) REFERENCES Author(AuthorId)
 );
+GO
 
+<<<<<<< HEAD
 select * from Employees
 
+=======
+PRINT N'===== BẮT ĐẦU CHÈN DỮ LIỆU =====';
+GO
+select * from Employees;
+>>>>>>> 5b7384b (update sql_data.sql again)
 -- 1. Thêm một Nhân viên mẫu (vì tài khoản Admin cần liên kết với Employee)
 INSERT INTO Employees (EmployeeId, FullName, Role)
 VALUES ('NV001', N'Admin Quản Trị', N'Quản lý');
@@ -145,11 +161,12 @@ GO
 
 -- 2. Thêm một Tài khoản Admin liên kết với nhân viên 'NV001'
 -- TÀI KHOẢN: admin
--- MẬT KHẨU: 123 (văn bản thuần, khớp với code đăng nhập hiện tại)
+-- MẬT KHẨU: 123
 INSERT INTO Account (AccountId, Username, Password, EmployeeId, ReaderId)
 VALUES ('TK001', N'admin', N'123', 'NV001', NULL);
 GO
 
+<<<<<<< HEAD
 
 
 -- Thêm dữ liệu vào bảng Books
@@ -189,13 +206,16 @@ PRINT N'Đã cập nhật số lượng cho 20 cuốn sách.';
 GO
 select * from Books
 -- Thêm dữ liệu vào bảng Category
+=======
+-- 3. Thêm dữ liệu bảng Category (Đợt 1)
+>>>>>>> 5b7384b (update sql_data.sql again)
 INSERT INTO Category (CategoryId, Name) 
 VALUES 
 (N'TL001', N'Công nghệ thông tin'), 
 (N'TL002', N'Mạng và bảo mật'), 
 (N'TL003', N'Cơ sở dữ liệu');
 
--- Thêm dữ liệu vào bảng Author
+-- 4. Thêm dữ liệu bảng Author (Đợt 1)
 INSERT INTO Author (AuthorId, Name)
 VALUES
 (N'TG001', N'Nguyễn Văn A'),
@@ -205,12 +225,13 @@ VALUES
 (N'TG005', N'Vũ Thị E'),
 (N'TG006', N'Đặng Tiến F');
 
--- Thêm dữ liệu vào bảng Publisher
+-- 5. Thêm dữ liệu bảng Publisher (Đợt 1)
 INSERT INTO Publisher (PublisherId, Name, Address, Telephone)
 VALUES
 (N'NXB001', N'Nhà xuất bản Giáo dục', N'Hà Nội', N'0241234567'),
 (N'NXB002', N'Nhà xuất bản Trẻ', N'TP.HCM', N'0287654321'),
 (N'NXB003', N'Nhà xuất bản Khoa học', N'Đà Nẵng', N'0236123456');
+<<<<<<< HEAD
 -- Thêm dữ liệu độc giả 
 INSERT INTO Readers (ReaderId, FullName, DateOfBirth, NationalId, TypeOfReader, Email, Telephone, Address, Department)
 VALUES 
@@ -331,44 +352,80 @@ INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES
 (N'TK021', N'gv_dtmai', N'123', N'GV011');
 
 
+=======
+
+-- 6. Thêm dữ liệu vào bảng Books (Đợt 1, S001-S007)
+INSERT INTO Books (BookId, Name, YearOfPublic, Position, NumOfPage, Cost, CategoryId, AuthorId, PublisherId, Quantity)
+VALUES 
+(N'S001', N'Lập trình C# cơ bản', 2020, N'A1', 350, 100000, N'TL001', N'TG001', N'NXB001', 10),
+(N'S002', N'Lập trình Java nâng cao', 2021, N'B2', 420, 120000, N'TL001', N'TG002', N'NXB002', 8),
+(N'S003', N'Thiết kế web với HTML, CSS', 2022, N'C1', 320, 90000, N'TL002', N'TG003', N'NXB003', 15),
+(N'S004', N'Khoa học dữ liệu với Python', 2023, N'A3', 500, 150000, N'TL001', N'TG004', N'NXB001', 7),
+(N'S005', N'Cơ sở dữ liệu SQL', 2019, N'B1', 380, 85000, N'TL003', N'TG001', N'NXB002', 12),
+(N'S006', N'An toàn mạng máy tính', 2021, N'C2', 450, 135000, N'TL002', N'TG005', N'NXB003', 5),
+(N'S007', N'Giới thiệu về Trí tuệ nhân tạo', 2022, N'D1', 330, 110000, N'TL001', N'TG006', N'NXB001', 10);
+>>>>>>> 5b7384b (update sql_data.sql again)
 GO
 
-PRINT N'Bắt đầu thêm dữ liệu bổ sung...';
+-- 7. Thêm dữ liệu độc giả (Sinh viên)
+INSERT INTO Readers (ReaderId, FullName, DateOfBirth, NationalId, TypeOfReader, Email, Telephone, Address, Department)
+VALUES 
+('SV002', N'Lê Minh Tuấn', '2003-01-10', '012345678902', N'Sinh viên', 'tuan.le@email.com', '0912345678', N'123 Đường A, Quận 1, TP. HCM', N'Công nghệ Thông tin'),
+('SV003', N'Trần Thị Mai', '2004-02-15', '012345678903', N'Sinh viên', 'mai.tran@email.com', '0912345679', N'456 Đường B, Quận 3, TP. HCM', N'Kế toán'),
+('SV004', N'Phạm Văn Hùng', '2003-03-20', '012345678904', N'Sinh viên', 'hung.pham@email.com', '0912345680', N'789 Đường C, Quận 5, TP. HCM', N'Cơ khí'),
+('SV005', N'Huỳnh Thị Lan', '2005-04-25', '012345678905', N'Sinh viên', 'lan.huynh@email.com', '0912345681', N'101 Đường D, Quận 7, TP. HCM', N'Ngôn ngữ Anh'),
+('SV006', N'Bùi Văn Đức', '2003-05-30', '012345678906', N'Sinh viên', 'duc.bui@email.com', '0912345682', N'202 Đường E, Quận 9, TP. HCM', N'Công nghệ Thông tin'),
+('SV007', N'Đặng Thị Hoa', '2004-06-05', '012345678907', N'Sinh viên', 'hoa.dang@email.com', '0912345683', N'303 Đường F, Quận 11, TP. HCM', N'Quản trị Kinh doanh'),
+('SV008', N'Ngô Văn Nam', '2003-07-10', '012345678908', N'Sinh viên', 'nam.ngo@email.com', '0912345684', N'404 Đường G, Quận Gò Vấp, TP. HCM', N'Điện tử Viễn thông'),
+('SV009', N'Dương Thị Thu', '2005-08-15', '012345678909', N'Sinh viên', 'thu.duong@email.com', '0912345685', N'505 Đường H, Quận Tân Bình, TP. HCM', N'Tài chính Ngân hàng'),
+('SV010', N'Hoàng Văn Long', '2003-09-20', '012345678910', N'Sinh viên', 'long.hoang@email.com', '0912345686', N'606 Đường I, Quận Bình Thạnh, TP. HCM', N'Công nghệ Thông tin'),
+('SV011', N'Vũ Thị Kim', '2004-10-25', '012345678911', N'Sinh viên', 'kim.vu@email.com', '0912345687', N'707 Đường K, Quận Phú Nhuận, TP. HCM', N'Luật');
 GO
 
--- ==============================================
--- BỔ SUNG THÊM THỂ LOẠI
--- ==============================================
-INSERT INTO Category (CategoryId, Name)
-VALUES
-(N'TL004', N'Văn học'),
-(N'TL005', N'Kinh tế'),
-(N'TL006', N'Tâm lý học'),
-(N'TL007', N'Khoa học xã hội'),
-(N'TL008', N'Ngoại ngữ');
+-- 8. Thêm dữ liệu độc giả (Giảng viên)
+INSERT INTO Readers (ReaderId, FullName, DateOfBirth, NationalId, TypeOfReader, Email, Telephone, Address, Department)
+VALUES 
+('GV002', N'Nguyễn Văn Bình', '1980-01-05', '023456789002', N'Giảng viên', 'binh.nguyen@email.com', '0987654322', N'808 Đường L, Quận 2, TP. HCM', N'Công nghệ Thông tin'),
+('GV003', N'Trần Thị Cúc', '1982-02-10', '023456789003', N'Giảng viên', 'cuc.tran@email.com', '0987654323', N'909 Đường M, Quận 4, TP. HCM', N'Kế toán'),
+('GV004', N'Lê Văn Dũng', '1978-03-15', '023456789004', N'Giảng viên', 'dung.le@email.com', '0987654324', N'111 Đường N, Quận 6, TP. HCM', N'Cơ khí'),
+('GV005', N'Phạm Thị Lan', '1985-04-20', '023456789005', N'Giảng viên', 'lan.pham@email.com', '0987654325', N'222 Đường P, Quận 8, TP. HCM', N'Ngôn ngữ Anh'),
+('GV006', N'Hoàng Văn Minh', '1990-05-25', '023456789006', N'Giảng viên', 'minh.hoang@email.com', '0987654326', N'333 Đường Q, Quận 10, TP. HCM', N'Công nghệ Thông tin'),
+('GV007', N'Vũ Thị Nga', '1988-06-30', '023456789007', N'Giảng viên', 'nga.vu@email.com', '0987654327', N'444 Đường R, Quận 12, TP. HCM', N'Quản trị Kinh doanh'),
+('GV008', N'Đặng Văn Sơn', '1975-07-05', '023456789008', N'Giảng viên', 'son.dang@email.com', '0987654328', N'555 Đường S, Quận Tân Phú, TP. HCM', N'Điện tử Viễn thông'),
+('GV009', N'Bùi Thị Thảo', '1992-08-10', '023456789009', N'Giảng viên', 'thao.bui@email.com', '0987654329', N'666 Đường T, Quận Bình Tân, TP. HCM', N'Tài chính Ngân hàng'),
+('GV010', N'Ngô Văn Hùng', '1983-09-15', '023456789010', N'Giảng viên', 'hung.ngo@email.com', '0987654330', N'777 Đường U, TP. Thủ Đức, TP. HCM', N'Công nghệ Thông tin'),
+('GV011', N'Dương Thị Mai', '1995-10-20', '023456789011', N'Giảng viên', 'mai.duong@email.com', '0987654331', N'888 Đường V, Huyện Củ Chi, TP. HCM', N'Luật');
 GO
 
--- ==============================================
--- BỔ SUNG THÊM TÁC GIẢ
--- ==============================================
-INSERT INTO Author (AuthorId, Name)
-VALUES
-(N'TG007', N'Dale Carnegie'),
-(N'TG008', N'Yuval Noah Harari'),
-(N'TG009', N'Robert Kiyosaki'),
-(N'TG010', N'Paulo Coelho'),
-(N'TG011', N'Nguyễn Nhật Ánh');
+-- 9. Thêm tài khoản cho Sinh viên
+INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES 
+(N'TK002', N'lmtuan', N'123', N'SV002'),
+(N'TK003', N'ttmai', N'123', N'SV003'),
+(N'TK004', N'pvhung', N'123', N'SV004'),
+(N'TK005', N'hthan', N'123', N'SV005'),
+(N'TK006', N'bvduc', N'123', N'SV006'),
+(N'TK007', N'dthoa', N'123', N'SV007'),
+(N'TK008', N'nvnam', N'123', N'SV008'),
+(N'TK009', N'dtthu', N'123', N'SV009'),
+(N'TK010', N'hvlong', N'123', N'SV010'),
+(N'TK011', N'vtkim', N'123', N'SV011');
 GO
 
--- ==============================================
--- BỔ SUNG THÊM NHÀ XUẤT BẢN
--- ==============================================
-INSERT INTO Publisher (PublisherId, Name, Address, Telephone)
-VALUES
-(N'NXB004', N'Nhà xuất bản Kim Đồng', N'Hà Nội', N'0249876543'),
-(N'NXB005', N'Nhà xuất bản Tổng hợp TPHCM', N'TP.HCM', N'0281122334');
+-- 10. Thêm tài khoản cho Giảng viên
+INSERT INTO Account (AccountId, Username, Password, ReaderId) VALUES 
+(N'TK012', N'gv_nvbinh', N'123', N'GV002'),
+(N'TK013', N'gv_ttcuc', N'123', N'GV003'),
+(N'TK014', N'gv_lvdung', N'123', N'GV004'),
+(N'TK015', N'gv_pthlan', N'123', N'GV005'),
+(N'TK016', N'gv_hvminh', N'123', N'GV006'),
+(N'TK017', N'gv_vtnga', N'123', N'GV007'),
+(N'TK018', N'gv_dvson', N'123', N'GV008'),
+(N'TK019', N'gv_btthao', N'123', N'GV009'),
+(N'TK020', N'gv_nvhung', N'123', N'GV010'),
+(N'TK021', N'gv_dtmai', N'123', N'GV011');
 GO
 
+<<<<<<< HEAD
 -- ==============================================
 -- BỔ SUNG THÊM SÁCH (S008 - S020)
 -- ==============================================
@@ -462,3 +519,7 @@ PRINT N'Đã thêm thành công dữ liệu sách và phiếu mượn!';
 GO
 
 
+=======
+PRINT N'===== BẮT ĐẦU BỔ SUNG DỮ LIỆU MỞ RỘNG =====';
+GO
+>>>>>>> 5b7384b (update sql_data.sql again)
