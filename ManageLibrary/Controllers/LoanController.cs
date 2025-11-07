@@ -31,6 +31,32 @@ namespace QLThuVien.Controllers
             return User.Claims.FirstOrDefault(c => c.Type == "EmployeeId")?.Value ?? "NV001";
         }
 
+        // (Helper) Sinh mã phiếu mượn tiếp theo dạng PM###
+        private async Task<string> GenerateNextLoanIdAsync()
+        {
+            const string prefix = "PM";
+            int maxNumber = 0;
+
+            var ids = await _context.LoanSlips
+                .AsNoTracking()
+                .Select(l => l.LoanId)
+                .ToListAsync();
+
+            foreach (var id in ids)
+            {
+                if (string.IsNullOrWhiteSpace(id)) continue;
+                // Lấy tất cả ký tự số trong chuỗi (hỗ trợ cả định dạng PM-..., PM001, ...)
+                var digits = new string(id.Where(char.IsDigit).ToArray());
+                if (int.TryParse(digits, out var number))
+                {
+                    if (number > maxNumber) maxNumber = number;
+                }
+            }
+
+            var next = maxNumber + 1;
+            return prefix + next.ToString("D3"); // PM001, PM002, ...
+        }
+
         // 4. (Helper) Tải Dropdowns
         private async Task PopulateDropdownsAsync()
         {
@@ -158,6 +184,7 @@ namespace QLThuVien.Controllers
                     {
                         // 6. Gán thông tin phiếu mượn
                         loan.LoanId = "PM-" + DateTimeOffset.Now.ToUnixTimeSeconds().ToString();
+                        loan.LoanId = await GenerateNextLoanIdAsync();
                         loan.Status = "Đang mượn";
 
                         // 7. Thêm chi tiết và GIẢM SỐ LƯỢNG sách
