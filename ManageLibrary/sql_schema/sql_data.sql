@@ -65,8 +65,8 @@ CREATE TABLE Books (
     Position NVARCHAR(50),
     NumOfPage INT,
     Cost DECIMAL(10,2),
-    CategoryId VARCHAR(20),
-    AuthorId VARCHAR(20),
+    CaId VAtegoryRCHAR(20),
+    AuthorId VARCHAR(20),a
     PublisherId VARCHAR(20),
     Quantity INT NOT NULL DEFAULT 0,
     FOREIGN KEY (CategoryId) REFERENCES Category(CategoryId),
@@ -161,7 +161,18 @@ VALUES
 ('DG009', N'Bùi Quốc Khánh', '2001-06-12', '384756920', N'Sinh viên', 'khanhbq@example.com', '0990123456', N'23 Tôn Đức Thắng, Cần Thơ', N'Luật học'),
 ('DG010', N'Nguyễn Thị Yến', '2000-01-20', '564738920', N'Sinh viên', 'yentn@example.com', '0902345678', N'101 Phạm Văn Đồng, Hà Nội', N'Thiết kế đồ họa');
 
-
+INSERT INTO Books (BookId, Name, YearOfPublic, Position, NumOfPage, Cost, CategoryId, AuthorId, PublisherId, Quantity)
+VALUES 
+('S006', N'Lập trình Python cho người mới bắt đầu', 2022, N'C3', 400, 110000, 'TL001', 'TG005', 'NXB002', 10),
+('S007', N'An toàn mạng máy tính', 2021, N'D1', 450, 130000, 'TL002', 'TG006', 'NXB003', 5),
+('S008', N'Quản trị cơ sở dữ liệu MySQL', 2020, N'B3', 390, 95000, 'TL003', 'TG002', 'NXB001', 8),
+('S009', N'Phát triển ứng dụng di động với React Native', 2023, N'A2', 550, 160000, 'TL001', 'TG004', 'NXB002', 12),
+('S010', N'Nhập môn Trí tuệ nhân tạo', 2022, N'E1', 480, 140000, 'TL001', 'TG003', 'NXB003', 9),
+('S011', N'Lập trình web nâng cao với Node.js', 2021, N'C2', 430, 125000, 'TL001', 'TG001', 'NXB001', 7),
+('S012', N'Phân tích và thiết kế hệ thống', 2019, N'D2', 360, 80000, 'TL001', 'TG005', 'NXB002', 11),
+('S013', N'Mật mã học và An ninh thông tin', 2022, N'A4', 410, 115000, 'TL002', 'TG006', 'NXB003', 6),
+('S014', N'Big Data và Analytics', 2023, N'B4', 520, 170000, 'TL003', 'TG004', 'NXB001', 4),
+('S015', N'Lập trình game với Unity', 2021, N'E2', 470, 135000, 'TL001', 'TG002', 'NXB002', 8);
 PRINT N'Cơ sở dữ liệu đã khởi tạo và thêm dữ liệu mẫu thành công!';
 GO
 
