@@ -1,61 +1,75 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@* File: Views/ClientPage/Details.cshtml *@
+﻿@* File: Views/ClientPage/Details.cshtml *@
 @model ManageLibrary.Models.Book
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml"; // (Hoặc _ClientLayout.cshtml)
-    ViewData["Title"] = Model.Name;
+    Layout = "~/Views/Shared/_Layout.cshtml"; 
+    ViewData["Title"] = Model.Name; 
 }
 
-<div class="container mt-4">
-    <div class="row">
-        @* <div class="col-md-4">
-            <img src="https://via.placeholder.com/300x450?text=Book+Cover" class="img-fluid rounded shadow" alt="Bìa sách">
-        </div> *@
+<div class="container mt-4 mb-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
 
-        <div class="col-md-8">
-            <h1 class="display-5">@Model.Name</h1>
-            <h4 class="text-muted">@(Model.Author?.Name ?? "Không rõ tác giả")</h4>
-            <hr>
+            @* Sử dụng "card" để tạo giao diện "đóng hộp"
+              tương tự như "modal-content"  trong file Loan/Index.cshtml 
+            *@
+            <div class="card shadow-sm">
 
-            <dl class="row">
-                <dt class="col-sm-3">Mã sách</dt>
-                <dd class="col-sm-9">@Model.BookId</dd>
+                @* Phần Header của Card, tương tự "modal-header"  *@
+                <div class="card-header bg-primary text-white py-3">
+                    <h2 class="mb-0">@Model.Name</h2>
+                </div>
 
-                <dt class="col-sm-3">Thể loại</dt>
-                <dd class="col-sm-9">@(Model.Category?.Name ?? "N/A")</dd>
+                @* Phần Body của Card, tương tự "modal-body"  *@
+                <div class="card-body p-4">
+                    <h4 class="text-muted mb-3">@(Model.Author?.Name ?? "Không rõ tác giả")</h4>
 
-                <dt class="col-sm-3">Nhà xuất bản</dt>
-                <dd class="col-sm-9">@(Model.Publisher?.Name ?? "N/A")</dd>
+                    @* Sử dụng "table-bordered" giống như bảng chi tiết
+                      trong file Loan/Index.cshtml 
+                    *@
+                    <table class="table table-bordered table-striped align-middle">
+                        <tbody>
+                            <tr>
+                                <th style="width: 25%;">Mã sách</th>
+                                <td>@Model.BookId</td>
+                            </tr>
+                            <tr>
+                                <th>Thể loại</th>
+                                <td>@(Model.Category?.Name ?? "N/A")</td> 
+                            <tr>
+                                <th>Nhà xuất bản</th>
+                                <td>@(Model.Publisher?.Name ?? "N/A")</td> 
+                            </tr>
+                            <tr>
+                                <th>Năm xuất bản</th>
+                                <td>@Model.YearOfPublic</td> 
+                            </tr>
+                            <tr>
+                                <th>Số trang</th>
+                                <td>@Model.NumOfPage</td> 
+                            </tr>
+                            <tr>
+                                <th>Giá bìa</th>
+                                <td>@Model.Cost?.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</td> 
+                            <tr>
+                                <th>Vị trí</th>
+                                <td>@(Model.Position ?? "N/A")</td>
+                            </tr>
+                            <tr>
+                                <th>Số lượng còn lại</th>
+                                <td>@Model.Quantity</td> 
+                            </tr>
+                        </tbody>
+                    </table>
 
-                <dt class="col-sm-3">Năm xuất bản</dt>
-                <dd class="col-sm-9">@Model.YearOfPublic</dd>
+                    <hr>
 
-                <dt class="col-sm-3">Số trang</dt>
-                <dd class="col-sm-9">@Model.NumOfPage</dd>
+          
+                    <a asp-controller="ClientPage" asp-action="Index" class="btn-primary">
+                        <i class="fas fa-arrow-left me-1"></i> Quay lại
+                    </a>
+                </div>
+            </div>
 
-                <dt class="col-sm-3">Giá bìa</dt>
-                <dd class="col-sm-9">@Model.Cost?.ToString("C0", new System.Globalization.CultureInfo("vi-VN"))</dd>
-
-                <dt class="col-sm-3">Vị trí</dt>
-                <dd class="col-sm-9">@(Model.Position ?? "N/A")</dd>
-
-                <dt class="col-sm-3">Số lượng còn lại</dt>
-                <dd class="col-sm-9">@Model.Quantity</dd>
-            </dl>
-
-            <hr>
-
-            <a asp-controller="ClientPage" asp-action="Index" class="btn btn-outline-secondary">
-                Quay lại
-            </a>
-
-            @* <a href="#" class="btn btn-primary">
-                Mượn sách
-            </a> *@
         </div>
     </div>
 </div>
