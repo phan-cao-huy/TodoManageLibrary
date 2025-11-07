@@ -1,4 +1,4 @@
-﻿@model IEnumerable<ManageLibrary.Models.LoanSlip>
+@model IEnumerable<ManageLibrary.Models.LoanSlip>
 @{
     ViewData["Title"] = "Quản lý mượn - trả";
     Layout = "~/Views/Shared/Layout.cshtml";
@@ -72,6 +72,7 @@
                     <th>Ngày trả</th>
                     <th>Trạng thái</th>
                     <th class="text-center" style="width: 160px;">Thao tác</th>
+                    <th class="text-center" style="width: 220px;">Thao tác</th>
                 </tr>
             </thead>
             <tbody>
@@ -98,9 +99,19 @@
                                 <a asp-action="Return" asp-route-id="@loan.LoanId" class="btn btn-primary btn-sm me-2">Trả sách</a>
                             }
                             <button type="button" class="btn btn-info btn-sm" data-bs-toggle="modal"
+                            <button type="button" class="btn btn-info btn-sm me-2" data-bs-toggle="modal"
                                     data-bs-target="#detailsModal-@loan.LoanId">
                                 Chi tiết
                             </button>
+
+                            @if (loan.Status == "Đã trả")
+                            {
+                                <form asp-action="Delete" asp-route-id="@loan.LoanId" method="post" class="d-inline"
+                                      onsubmit="return confirm('Bạn chắc chắn muốn xóa phiếu @loan.LoanId?');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-danger btn-sm">Xóa</button>
+                                </form>
+                            }
                         </td>
                     </tr>
                 }
